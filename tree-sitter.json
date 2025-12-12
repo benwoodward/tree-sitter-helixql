@@ -1,6 +1,16 @@
 {
-  "grammars": ["grammar.js"],
-  "file-types": ["hx"],
+  "grammars": [
+    {
+      "name": "helixql",
+      "camelcase": "HelixQL",
+      "scope": "source.helixql",
+      "path": ".",
+      "file-types": [
+        "hx"
+      ],
+      "highlights": "queries/highlights.scm"
+    }
+  ],
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
@@ -10,5 +20,9 @@
         "name": "Ben Woodward"
       }
     ]
+  },
+  "bindings": {
+    "node": true,
+    "rust": true
   }
 }

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree-sitter init-config:*)",
+      "Bash(tree-sitter:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm test)",
+      "Bash(cargo build:*)"
+    ]
+  }
+}

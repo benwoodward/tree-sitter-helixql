@@ -1,2 +1,6 @@
 src/scanner.c -linguist-detectable
 queries/highlights.scm -linguist-detectable
+
+# Zig bindings
+build.zig linguist-generated
+build.zig.zon linguist-generated
