@@ -62,6 +62,64 @@ npm run generate  # Generate parser from grammar.js
 npm run test      # Run tests
 ```
 
+### Testing in Neovim (local development)
+
+To test changes to the grammar in Neovim, add this to your config (e.g., `~/.config/nvim/lua/config/autocmds.lua`):
+
+```lua
+-- Register local parser
+local function register_helixql_parser()
+  local ok, parsers = pcall(require, "nvim-treesitter.parsers")
+  if ok then
+    parsers.helixql = {
+      install_info = {
+        path = "/path/to/tree-sitter-helixql",  -- Update this path
+        files = { "src/parser.c", "src/scanner.c" },
+      },
+      filetype = "helixql",
+    }
+  end
+end
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function() vim.schedule(register_helixql_parser) end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TSUpdate",
+  callback = register_helixql_parser,
+})
+
+-- Filetype detection
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*.hx",
+  callback = function() vim.bo.filetype = "helixql" end,
+})
+
+-- Enable highlighting
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "helixql",
+  callback = function(args)
+    vim.treesitter.start(args.buf, "helixql")
+  end,
+})
+```
+
+Create a symlink for query files:
+
+```sh
+mkdir -p ~/.config/nvim/queries
+ln -sf /path/to/tree-sitter-helixql/queries ~/.config/nvim/queries/helixql
+```
+
+Install the parser:
+
+```vim
+:TSInstallFromGrammar helixql
+```
+
+After making changes to `grammar.js`, run `npm run generate` and restart Neovim.
+
 ## File Types
 
 This grammar supports `.hx` files.
