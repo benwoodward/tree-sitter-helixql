@@ -1,22 +1,87 @@
-# tree-sitter-PARSER_NAME
+# tree-sitter-helixdb
 
-[![CI][ci]](https://github.com/tree-sitter-grammars/tree-sitter-PARSER_NAME/actions/workflows/ci.yml)
-[![discord][discord]](https://discord.gg/w7nTvsVJhm)
-[![matrix][matrix]](https://matrix.to/#/#tree-sitter-chat:matrix.org)
-<!-- NOTE: uncomment these if you're publishing packages: -->
-<!-- [![npm][npm]](https://www.npmjs.com/package/tree-sitter-PARSER_NAME) -->
-<!-- [![crates][crates]](https://crates.io/crates/tree-sitter-PARSER_NAME) -->
-<!-- [![pypi][pypi]](https://pypi.org/project/tree-sitter-PARSER_NAME/) -->
+[![CI][ci]](https://github.com/benwoodward/tree-sitter-helixdb/actions/workflows/ci.yml)
 
-A Tree-sitter parser for PARSER_NAME files.
+Tree-sitter grammar for HelixQL, the query language for [HelixDB](https://helix-db.com).
+
+## Installation
+
+### Neovim (via nvim-treesitter)
+
+If HelixQL is already in nvim-treesitter:
+
+```vim
+:TSInstall helixql
+```
+
+If not yet merged, add this to your Neovim config:
+
+```lua
+vim.api.nvim_create_autocmd("User", {
+    pattern = "TSUpdate",
+    callback = function()
+        require("nvim-treesitter.parsers").helixql = {
+            install_info = {
+                url = "https://github.com/benwoodward/tree-sitter-helixdb",
+                files = { "src/parser.c" },
+                branch = "main",
+            },
+            tier = 3,
+        }
+    end,
+})
+```
+
+Then enable treesitter for helixql files:
+
+```lua
+vim.filetype.add({
+    extension = {
+        hx = "helixql",
+    },
+})
+```
+
+## Development
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/)
+- [tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/tree/master/cli)
+
+### Install dependencies
+
+```sh
+npm install
+```
+
+### Build and test
+
+```sh
+npm run generate  # Generate parser from grammar.js
+npm run test      # Run tests
+```
+
+## File Types
+
+This grammar supports `.hx` files.
+
+## Features
+
+The grammar supports:
+
+- **Schema definitions**: Node (`N::`), Edge (`E::`), and Vector (`V::`) types
+- **Queries**: Function-style query definitions with parameters
+- **Traversals**: Graph navigation operators (`OutE`, `InE`, `FromN`, `ToN`, etc.)
+- **Filters**: `WHERE` clauses with comparison operators
+- **Mutations**: `AddN`, `AddE`, `AddV`, `UPDATE`, `DROP`
+- **Vector search**: `SearchV` for similarity search
+- **Control flow**: `FOR` loops, `RETURN` statements
+- **Object mapping**: Property remapping and projection
 
 ## References
 
-<!-- NOTE: add the grammar's references here -->
+- [HelixDB Documentation](https://helix-db.com/docs)
+- [HelixQL Language Reference](https://helix-db.com/docs/languages/helixql)
 
-[ci]: https://img.shields.io/github/actions/workflow/status/tree-sitter-grammars/tree-sitter-PARSER_NAME/ci.yml?logo=github&label=CI
-[discord]: https://img.shields.io/discord/1063097320771698699?logo=discord&label=discord
-[matrix]: https://img.shields.io/matrix/tree-sitter-chat%3Amatrix.org?logo=matrix&label=matrix
-[npm]: https://img.shields.io/npm/v/tree-sitter-PARSER_NAME?logo=npm
-[crates]: https://img.shields.io/crates/v/tree-sitter-PARSER_NAME?logo=rust
-[pypi]: https://img.shields.io/pypi/v/tree-sitter-PARSER_NAME?logo=pypi&logoColor=ffd242
+[ci]: https://img.shields.io/github/actions/workflow/status/benwoodward/tree-sitter-helixdb/ci.yml?logo=github&label=CI

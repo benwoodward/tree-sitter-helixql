@@ -1,0 +1,14 @@
+{
+  "grammars": ["grammar.js"],
+  "file-types": ["hx"],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "HelixQL grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Ben Woodward"
+      }
+    ]
+  }
+}
