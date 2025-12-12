@@ -1,0 +1,118 @@
+==================
+String literal
+==================
+
+QUERY ReturnString() =>
+  RETURN "hello world"
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (string_literal)))))
+
+==================
+String with escape
+==================
+
+QUERY ReturnEscaped() =>
+  RETURN "hello \"world\""
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (string_literal)))))
+
+==================
+Integer literal
+==================
+
+QUERY ReturnInt() =>
+  RETURN 42
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (integer)))))
+
+==================
+Float literal
+==================
+
+QUERY ReturnFloat() =>
+  RETURN 3.14
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (float)))))
+
+==================
+Boolean true
+==================
+
+QUERY ReturnTrue() =>
+  RETURN true
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (boolean)))))
+
+==================
+Boolean false
+==================
+
+QUERY ReturnFalse() =>
+  RETURN false
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (boolean)))))
+
+==================
+NONE literal
+==================
+
+QUERY ReturnNone() =>
+  RETURN NONE
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    return: (return_stmt
+      (evaluates_to_anything
+        (none)))))

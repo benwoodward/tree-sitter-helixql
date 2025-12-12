@@ -1,0 +1,316 @@
+==================
+Edge traversal with OutE
+==================
+
+QUERY GetFollowEdges(userId: String) =>
+  edges <- N<User>(userId)::OutE<Follows>
+  RETURN edges
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (out_e
+                  (type_args
+                    (identifier_upper)))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Edge traversal with InE
+==================
+
+QUERY GetIncomingEdges(userId: String) =>
+  edges <- N<User>(userId)::InE<Follows>
+  RETURN edges
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (in_e
+                  (type_args
+                    (identifier_upper)))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+ToN and FromN navigation
+==================
+
+QUERY GetEdgeNodes(edgeId: String) =>
+  from <- E<Follows>(edgeId)::FromN
+  to <- E<Follows>(edgeId)::ToN
+  RETURN from, to
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_edge
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (from_n))))))
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_edge
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (to_n)))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier))
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Object spread
+==================
+
+QUERY GetUserWithExtra(userId: String) =>
+  user <- N<User>(userId)
+  RETURN { ..  }
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (object_step
+          (spread_object))))))
+
+==================
+Closure step with mapping
+==================
+
+QUERY GetUsersWithMappedPosts(userId: String) =>
+  posts <- N<User>(userId)::Out<WrittenBy>::|post| { title: post::title }
+  RETURN posts
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (out
+                  (type_args
+                    (identifier_upper)))))
+            (step
+              (closure_step
+                (identifier)
+                (object_step
+                  (mapping_field
+                    (identifier)
+                    (evaluates_to_anything
+                      (id_traversal
+                        (identifier)
+                        (step
+                          (identifier))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Get ID of node
+==================
+
+QUERY GetUserId(userId: String) =>
+  id <- N<User>(userId)::ID
+  RETURN id
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (ID))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Exclude fields
+==================
+
+QUERY GetUserWithoutEmail(userId: String) =>
+  user <- N<User>(userId)::!{ email }
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (exclude_field
+                (identifier)))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+By index lookup
+==================
+
+QUERY GetUserByEmail(email: String) =>
+  user <- N<User>({ email: email })
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (by_index
+                (id_arg
+                  (identifier))
+                (evaluates_to_anything
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))

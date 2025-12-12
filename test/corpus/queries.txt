@@ -1,0 +1,304 @@
+==================
+Simple query - node traversal
+==================
+
+QUERY GetUsers() =>
+  users <- N<User>
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query with parameters
+==================
+
+QUERY GetUserById(userId: String) =>
+  user <- N<User>(userId)
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query with multiple parameters
+==================
+
+QUERY CreatePost(title: String, content: String, authorId: ID) =>
+  RETURN NONE
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (ID_TYPE))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (none)))))
+
+==================
+Query with Out traversal
+==================
+
+QUERY GetUserPosts(userId: String) =>
+  posts <- N<User>(userId)::Out<WrittenBy>
+  RETURN posts
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (out
+                  (type_args
+                    (identifier_upper)))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query with In traversal
+==================
+
+QUERY GetPostAuthor(postId: String) =>
+  author <- N<Post>(postId)::In<WrittenBy>
+  RETURN author
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (graph_step
+                (in_nodes
+                  (type_args
+                    (identifier_upper)))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query with WHERE clause
+==================
+
+QUERY GetActiveUsers() =>
+  users <- N<User>::WHERE(_.isActive::EQ(true))
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (anonymous_traversal
+                  (property_access
+                    property: (identifier))
+                  (last_step
+                    (bool_operations
+                      (EQ
+                        (evaluates_to_anything
+                          (boolean))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query with RANGE
+==================
+
+QUERY GetPagedUsers(offset: I32, limit: I32) =>
+  users <- N<User>::RANGE(offset, limit)
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (range_step
+                (evaluates_to_number
+                  (identifier))
+                (evaluates_to_number
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query with COUNT
+==================
+
+QUERY CountUsers() =>
+  count <- N<User>::COUNT
+  RETURN count
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (count))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Query returning object with simple fields
+==================
+
+QUERY GetUserProfile(userId: String) =>
+  user <- N<User>(userId)
+  RETURN { name, email }
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (object_step
+          (mapping_field
+            (identifier))
+          (mapping_field
+            (identifier)))))))

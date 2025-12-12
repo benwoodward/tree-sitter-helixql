@@ -1,0 +1,283 @@
+==================
+EQ - equality check
+==================
+
+QUERY GetUserByEmail(email: String) =>
+  user <- N<User>::WHERE(_.email::EQ(email))
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (anonymous_traversal
+                  (property_access
+                    property: (identifier))
+                  (last_step
+                    (bool_operations
+                      (EQ
+                        (evaluates_to_anything
+                          (identifier))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+GT - greater than
+==================
+
+QUERY GetOlderUsers(minAge: I32) =>
+  users <- N<User>::WHERE(_.age::GT(minAge))
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (anonymous_traversal
+                  (property_access
+                    property: (identifier))
+                  (last_step
+                    (bool_operations
+                      (GT
+                        (evaluates_to_number
+                          (identifier))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+LT - less than
+==================
+
+QUERY GetYoungerUsers(maxAge: I32) =>
+  users <- N<User>::WHERE(_.age::LT(maxAge))
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (anonymous_traversal
+                  (property_access
+                    property: (identifier))
+                  (last_step
+                    (bool_operations
+                      (LT
+                        (evaluates_to_number
+                          (identifier))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+AND - multiple conditions
+==================
+
+QUERY GetActiveAdults() =>
+  users <- N<User>::WHERE(AND(_.age::GTE(18), _.isActive::EQ(true)))
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (evaluates_to_bool
+                  (and
+                    (anonymous_traversal
+                      (property_access
+                        property: (identifier))
+                      (last_step
+                        (bool_operations
+                          (GTE
+                            (evaluates_to_number
+                              (integer))))))
+                    (anonymous_traversal
+                      (property_access
+                        property: (identifier))
+                      (last_step
+                        (bool_operations
+                          (EQ
+                            (evaluates_to_anything
+                              (boolean))))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+OR - alternative conditions
+==================
+
+QUERY GetSpecialUsers() =>
+  users <- N<User>::WHERE(OR(_.isAdmin::EQ(true), _.isPremium::EQ(true)))
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (evaluates_to_bool
+                  (or
+                    (anonymous_traversal
+                      (property_access
+                        property: (identifier))
+                      (last_step
+                        (bool_operations
+                          (EQ
+                            (evaluates_to_anything
+                              (boolean))))))
+                    (anonymous_traversal
+                      (property_access
+                        property: (identifier))
+                      (last_step
+                        (bool_operations
+                          (EQ
+                            (evaluates_to_anything
+                              (boolean))))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+NEQ - not equal
+==================
+
+QUERY GetNonAdmins() =>
+  users <- N<User>::WHERE(_.isAdmin::NEQ(true))
+  RETURN users
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper)))
+            (step
+              (where_step
+                (anonymous_traversal
+                  (property_access
+                    property: (identifier))
+                  (last_step
+                    (bool_operations
+                      (NEQ
+                        (evaluates_to_anything
+                          (boolean))))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+EXISTS - with property check
+==================
+
+QUERY CheckEmail(userId: String) =>
+  hasEmail <- EXISTS(N<User>(userId)::email)
+  RETURN hasEmail
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (exists
+            (traversal
+              (start_node
+                (type_args
+                  (identifier_upper))
+                (id_args
+                  (id_arg
+                    (identifier))))
+              (step
+                (identifier)))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))

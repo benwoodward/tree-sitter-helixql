@@ -1,0 +1,134 @@
+==================
+AddV - with identifier
+==================
+
+QUERY AddEmbedding(embedding: [F32], content: String) =>
+  vec <- AddV<Embedding>(embedding, { content: content })
+  RETURN vec
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (array
+            (param_type
+              (named_type)))))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (AddV
+            (identifier_upper)
+            (vector_data
+              (identifier))
+            (create_field
+              (new_field
+                key: (identifier)
+                value: (evaluates_to_anything
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+SearchV - vector search
+==================
+
+QUERY SearchSimilar(query: [F32], limit: I32) =>
+  results <- SearchV<Embedding>(query, limit)
+  RETURN results
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (array
+            (param_type
+              (named_type)))))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (search_vector
+            (identifier_upper)
+            (vector_data
+              (identifier))
+            (identifier)))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+BatchAddV - batch vector insert
+==================
+
+QUERY BatchInsertEmbeddings(embeddings: [F32]) =>
+  vecs <- BatchAddV<Embedding>(embeddings)
+  RETURN vecs
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (array
+            (param_type
+              (named_type))))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (BatchAddV
+            (identifier_upper)
+            (identifier)))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+Vector traversal
+==================
+
+QUERY GetVectors() =>
+  vecs <- V<Embedding>
+  RETURN vecs
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params)
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_vector
+              (type_args
+                (identifier_upper)))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))

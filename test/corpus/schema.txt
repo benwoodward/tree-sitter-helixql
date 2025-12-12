@@ -1,0 +1,227 @@
+==================
+Node definition - empty body
+==================
+
+N::User
+
+---
+
+(source
+  (node_def
+    name: (identifier_upper)))
+
+==================
+Node definition - with fields
+==================
+
+N::User {
+  name: String,
+  age: I32
+}
+
+---
+
+(source
+  (node_def
+    name: (identifier_upper)
+    body: (node_body
+      (field_defs
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type)))
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type)))))))
+
+==================
+Node definition - with index
+==================
+
+N::User {
+  INDEX email: String,
+  name: String
+}
+
+---
+
+(source
+  (node_def
+    name: (identifier_upper)
+    body: (node_body
+      (field_defs
+        (field_def
+          (index)
+          name: (identifier)
+          type: (param_type
+            (named_type)))
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type)))))))
+
+==================
+Node definition - with default values
+==================
+
+N::Post {
+  title: String,
+  views: I32 DEFAULT 0,
+  published: Boolean DEFAULT false
+}
+
+---
+
+(source
+  (node_def
+    name: (identifier_upper)
+    body: (node_body
+      (field_defs
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type)))
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type))
+          (default
+            (integer)))
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type))
+          (default
+            (boolean)))))))
+
+==================
+Node definition - with date default NOW
+==================
+
+N::Post {
+  createdAt: Date DEFAULT NOW
+}
+
+---
+
+(source
+  (node_def
+    name: (identifier_upper)
+    body: (node_body
+      (field_defs
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (date_type))
+          (default
+            (now)))))))
+
+==================
+Edge definition - simple
+==================
+
+E::Follows {
+  From: User,
+  To: User
+}
+
+---
+
+(source
+  (edge_def
+    name: (identifier_upper)
+    body: (edge_body
+      from: (identifier_upper)
+      to: (identifier_upper))))
+
+==================
+Edge definition - with properties
+==================
+
+E::WrittenBy {
+  From: Post,
+  To: User,
+  Properties: {
+    role: String,
+    since: Date
+  }
+}
+
+---
+
+(source
+  (edge_def
+    name: (identifier_upper)
+    body: (edge_body
+      from: (identifier_upper)
+      to: (identifier_upper)
+      (properties
+        (field_defs
+          (field_def
+            name: (identifier)
+            type: (param_type
+              (named_type)))
+          (field_def
+            name: (identifier)
+            type: (param_type
+              (date_type))))))))
+
+==================
+Vector definition - simple
+==================
+
+V::Embedding
+
+---
+
+(source
+  (vector_def
+    name: (identifier_upper)))
+
+==================
+Vector definition - with fields
+==================
+
+V::Embedding {
+  content: String,
+  dimension: I32
+}
+
+---
+
+(source
+  (vector_def
+    name: (identifier_upper)
+    body: (node_body
+      (field_defs
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type)))
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (named_type)))))))
+
+==================
+Node definition - array type
+==================
+
+N::User {
+  tags: [String]
+}
+
+---
+
+(source
+  (node_def
+    name: (identifier_upper)
+    body: (node_body
+      (field_defs
+        (field_def
+          name: (identifier)
+          type: (param_type
+            (array
+              (param_type
+                (named_type)))))))))

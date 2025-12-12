@@ -3,6 +3,9 @@ node_modules/
 
 # Build artifacts
 *.wasm
+*.so
+*.dylib
+*.dll
 
 # OS files
 .DS_Store

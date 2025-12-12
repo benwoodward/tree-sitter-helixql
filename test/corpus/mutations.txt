@@ -1,0 +1,168 @@
+==================
+AddN - simple node creation
+==================
+
+QUERY CreateUser(name: String) =>
+  user <- AddN<User>({ name: name })
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (AddN
+            (identifier_upper)
+            (create_field
+              (new_field
+                key: (identifier)
+                value: (evaluates_to_anything
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+AddN - multiple fields
+==================
+
+QUERY CreateUser(name: String, email: String, age: I32) =>
+  user <- AddN<User>({ name: name, email: email, age: age })
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (AddN
+            (identifier_upper)
+            (create_field
+              (new_field
+                key: (identifier)
+                value: (evaluates_to_anything
+                  (identifier)))
+              (new_field
+                key: (identifier)
+                value: (evaluates_to_anything
+                  (identifier)))
+              (new_field
+                key: (identifier)
+                value: (evaluates_to_anything
+                  (identifier))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+AddE - edge creation with To
+==================
+
+QUERY FollowUser(followerId: ID, followeeId: ID) =>
+  edge <- N<User>(followerId)::AddE<Follows>::To(followeeId)
+  RETURN edge
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (ID_TYPE)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (ID_TYPE))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (step
+              (AddE
+                (identifier_upper)
+                (to_from
+                  (to
+                    (id_arg
+                      (identifier))))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
+
+==================
+UPDATE - single field
+==================
+
+QUERY UpdateUserName(userId: String, newName: String) =>
+  user <- N<User>(userId)::UPDATE({ name: newName })
+  RETURN user
+
+---
+
+(source
+  (query_def
+    name: (identifier)
+    params: (query_params
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type)))
+      (param_def
+        name: (identifier)
+        type: (param_type
+          (named_type))))
+    body: (query_body
+      (get_stmt
+        variable: (identifier)
+        value: (evaluates_to_anything
+          (traversal
+            (start_node
+              (type_args
+                (identifier_upper))
+              (id_args
+                (id_arg
+                  (identifier))))
+            (last_step
+              (update
+                (update_field
+                  key: (identifier)
+                  value: (evaluates_to_anything
+                    (identifier)))))))))
+    return: (return_stmt
+      (evaluates_to_anything
+        (identifier)))))
