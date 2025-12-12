@@ -1,6 +1,6 @@
-# tree-sitter-helixdb
+# tree-sitter-helixql
 
-[![CI][ci]](https://github.com/benwoodward/tree-sitter-helixdb/actions/workflows/ci.yml)
+[![CI][ci]](https://github.com/benwoodward/tree-sitter-helixql/actions/workflows/ci.yml)
 
 Tree-sitter grammar for HelixQL, the query language for [HelixDB](https://helix-db.com).
 
@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("User", {
     callback = function()
         require("nvim-treesitter.parsers").helixql = {
             install_info = {
-                url = "https://github.com/benwoodward/tree-sitter-helixdb",
+                url = "https://github.com/benwoodward/tree-sitter-helixql",
                 files = { "src/parser.c" },
                 branch = "main",
             },
@@ -81,7 +81,7 @@ The grammar supports:
 
 ## References
 
-- [HelixDB Documentation](https://helix-db.com/docs)
-- [HelixQL Language Reference](https://helix-db.com/docs/languages/helixql)
+- [HelixDB Documentation](https://docs.helix-db.com/)
+- [HelixQL Language Reference](https://docs.helix-db.com/documentation/hql/hql)
 
-[ci]: https://img.shields.io/github/actions/workflow/status/benwoodward/tree-sitter-helixdb/ci.yml?logo=github&label=CI
+[ci]: https://img.shields.io/github/actions/workflow/status/benwoodward/tree-sitter-helixql/ci.yml?logo=github&label=CI
